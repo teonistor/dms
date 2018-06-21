@@ -1,0 +1,16 @@
+The algorithm hallucinated
+----
+
+Entries:
+- dms.app : Dummy front page (optional)
+- dms.app/reset : Welcome back, I'm glad you're alive. Enter password to reset the switch
+- dms.app/catastrophe : ... Please enter the password you were provided to find your version of the document
+- dms.app/status : perform cron job
+
+Times:
+- 2w: Friendly reminder
+- 4w: Alerted reminder
+- 6w: Panic
+- 8w: Top list contact
+- 8w+1d: Second contact
+- 8w+...: ...
