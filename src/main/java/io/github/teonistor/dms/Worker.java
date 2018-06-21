@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.example.appengine.taskqueue.push;
+package io.github.teonistor.dms;
 
 import java.io.IOException;
 import java.util.logging.Logger;

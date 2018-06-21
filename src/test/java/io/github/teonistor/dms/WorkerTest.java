@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.example.appengine.taskqueue.push;
+package io.github.teonistor.dms;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
@@ -29,6 +29,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import io.github.teonistor.dms.Worker;
 
 /**
  * Unit tests for {@link Worker}.

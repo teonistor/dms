@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-package com.example.appengine.taskqueue.push;
+package io.github.teonistor.dms;
+//import static com.googlecode
 
 // [START import]
 import com.google.appengine.api.taskqueue.Queue;
@@ -31,23 +32,24 @@ import javax.servlet.http.HttpServletResponse;
 // The Enqueue servlet should be mapped to the "/enqueue" URL.
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
 @WebServlet(
-    name = "TaskEnque",
-    description = "taskqueue: Enqueue a job with a key",
-    urlPatterns = "/taskqueues/enqueue"
-)
+		name = "TaskEnque",
+		description = "taskqueue: Enqueue a job with a key",
+		urlPatterns = "/taskqueues/enqueue"
+		)
 public class Enqueue extends HttpServlet {
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    String key = request.getParameter("key");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String key = request.getParameter("key");
 
-    // Add the task to the default queue.
-    // [START addQueue]
-    Queue queue = QueueFactory.getDefaultQueue();
-    queue.add(TaskOptions.Builder.withUrl("/worker").param("key", key));
-    // [END addQueue]
-
-    response.sendRedirect("/");
-  }
+		// Add the task to the default queue.
+		// [START addQueue]
+//		Queue queue = QueueFactory.getDefaultQueue();
+//		queue.add(TaskOptions.Builder.withUrl("/worker").param("key", key));
+//		// [END addQueue]
+//
+//		response.sendRedirect("/");
+		response.getWriter().write("Test OK");
+	}
 }
 // [END enqueue]
