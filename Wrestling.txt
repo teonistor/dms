@@ -1,0 +1,31 @@
+*Attempt to run after following instructions*
+
+com.google.datastore.v1.client.DatastoreException: The project no_app_id does not exist or it does not contain an active Cloud Datastore database. Please visit http://console.cloud.google.com to create a project or https://console.cloud.google.com/datastore/setup?project=no_app_id to add a Cloud Datastore database. Note that Cloud Datastore always has an associated App Engine app and this app must not be disabled.
+
+export DATASTORE_PROJECT_ID=gae-dms
+
+java.lang.IllegalStateException: Must use project ID as app ID if project ID is provided.
+
+export DATASTORE_APP_ID=gae-dms
+
+java.lang.IllegalStateException: Cannot provide both app ID and project ID.
+
+unset DATASTORE_PROJECT_ID
+
+com.google.datastore.v1.client.DatastoreException: The project no_app_id does not exist [...]
+
+export DATASTORE_USE_PROJECT_ID_AS_APP_ID=true
+
+java.lang.IllegalStateException: Cannot use project ID as app ID if app ID was provided.
+
+unset DATASTORE_APP_ID
+
+java.lang.IllegalStateException: Cannot use project ID as app ID when using API proxy.
+
+export DATASTORE_PROJECT_ID=gae-dms
+
+java.lang.IllegalArgumentException: id must not be equal to zero
+
+*Change some code contrary to instructions*
+
+Works.

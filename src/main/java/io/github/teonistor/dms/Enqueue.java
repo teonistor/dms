@@ -14,14 +14,20 @@
  */
 
 package io.github.teonistor.dms;
-//import static com.googlecode
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
-// [START import]
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
-// [END import]
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import javax.mail.Message;
+import javax.mail.Message.RecipientType;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +46,32 @@ public class Enqueue extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try {
+			
+			
 		String key = request.getParameter("key");
+		System.out.println(key);
+		
+		
+		AppData ad = ofy().load().type(AppData.class).first().now();
+		if (ad == null) {
+			System.out.println("Create fresh data");
+			ad = new AppData();
+		}
+		
+//			javax.mail.Message msg = new Message(
+//					"nistorteodor6a@gmail.com",
+//					"teo.g.nistor@gmail.com",
+//					"Test",
+//					"Testing...");
+			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+			msg.setFrom(new InternetAddress("nistorteodor6a@gmail.com"));
+			msg.addRecipient(RecipientType.TO, new InternetAddress("nistorteodor6a+rcv@gmail.com"));
+			msg.setSubject("Test");
+			msg.setText("Testing...");
+			
+			Transport.send(msg);
+		
 
 		// Add the task to the default queue.
 		// [START addQueue]
@@ -49,7 +80,16 @@ public class Enqueue extends HttpServlet {
 //		// [END addQueue]
 //
 //		response.sendRedirect("/");
-		response.getWriter().write("Test OK");
+		response.getWriter().write("ad = " + ad.u);
+		ad.u++;
+		ofy().save().entity(ad).now();
+		
+		} catch (Exception e) {
+			StringWriter st = new StringWriter();
+			e.printStackTrace(new PrintWriter(st));
+			Worker.log.log(Level.SEVERE, st.toString());
+			response.getWriter().write(st.toString());
+		}
 	}
 }
 // [END enqueue]

@@ -91,7 +91,11 @@ Copyright 2016 Google Inc.
       <version>0.41</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.googlecode.objectify</groupId>
+      <artifactId>objectify</artifactId>
+      <version>6.0</version>
+    </dependency>
   </dependencies>
   <build>
     <!-- for hot reload of the web application -->

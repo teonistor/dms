@@ -19,7 +19,15 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <welcome-file-list>
+<!--     <welcome-file-list>
         <welcome-file>taskqueue-push.html</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list> -->
+    <filter>
+	<filter-name>ObjectifyFilter</filter-name>
+	<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+	<filter-name>ObjectifyFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

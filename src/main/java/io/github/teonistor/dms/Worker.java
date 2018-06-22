@@ -27,22 +27,22 @@ import javax.servlet.http.HttpServletResponse;
 // The Worker servlet should be mapped to the "/worker" URL.
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
 @WebServlet(
-    name = "TaskWorker",
-    description = "TaskQueues: worker",
-    urlPatterns = "/taskqueues/worker"
-)
+		name = "TaskWorker",
+		description = "TaskQueues: worker",
+		urlPatterns = "/taskqueues/worker"
+		)
 public class Worker extends HttpServlet {
+	private static final long serialVersionUID = 1430565301551764185L;
+	public static final Logger log = Logger.getLogger(Worker.class.getName());
 
-  private static final Logger log = Logger.getLogger(Worker.class.getName());
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String key = request.getParameter("key");
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    String key = request.getParameter("key");
-
-    // Do something with key.
-    // [START_EXCLUDE]
-    log.info("Worker is processing " + key);
-    // [END_EXCLUDE]
-  }
+		// Do something with key.
+		// [START_EXCLUDE]
+		log.info("Worker is processing " + key);
+		// [END_EXCLUDE]
+	}
 }
 // [END worker]
