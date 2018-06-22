@@ -10,7 +10,7 @@ Based on GAE's [taskqueue-push](https://github.com/GoogleCloudPlatform/java-docs
 Using package google-cloud-sdk-app-engine-java (from e.g. `apt`):
 
     alias gcj=/usr/lib/google-cloud-sdk/bin/java_dev_appserver.sh # Do this once or put in ~/.bashrc
-    mvn package # Do this whenever changing non-.java files
+    mvn package # Do this whenever changing non-.java files, assuming an IDE with JIT compilation is used e.g. Eclipse
     gcj target/dms-1.0-SNAPSHOT/
 
 Or using the

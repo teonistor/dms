@@ -64,13 +64,13 @@ public class Enqueue extends HttpServlet {
 //					"teo.g.nistor@gmail.com",
 //					"Test",
 //					"Testing...");
-			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
-			msg.setFrom(new InternetAddress("nistorteodor6a@gmail.com"));
-			msg.addRecipient(RecipientType.TO, new InternetAddress("nistorteodor6a+rcv@gmail.com"));
-			msg.setSubject("Test");
-			msg.setText("Testing...");
-			
-			Transport.send(msg);
+//			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+//			msg.setFrom(new InternetAddress("nistorteodor6a@gmail.com"));
+//			msg.addRecipient(RecipientType.TO, new InternetAddress("nistorteodor6a+rcv@gmail.com"));
+//			msg.setSubject("Test");
+//			msg.setText("Testing...");
+//			
+//			Transport.send(msg);
 		
 
 		// Add the task to the default queue.
