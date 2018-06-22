@@ -1,8 +1,10 @@
 package io.github.teonistor.dms;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -13,13 +15,17 @@ import com.googlecode.objectify.annotation.Id;
 	@Id long id;
 	
 	List<Long> crons, flips;
-	String masterPswd;
+	List<Person> people;
+	String masterPswd, masterEmail, salt;
 
 	public AppData() {
 		id=1;
 		crons = new LinkedList<>();
 		flips = new LinkedList<>();
-		masterPswd = "1234"; // TODO
+		people = new ArrayList<>();
+		masterPswd = "Nil";
+		masterEmail = "nistorteodor6a+rcv@gmail.com";
+		salt = "Nil";
 	}
 
 	public static AppData retrieve() {
@@ -31,13 +37,15 @@ import com.googlecode.objectify.annotation.Id;
 		return ad;
 	}
 	
-	public boolean doCron() {
-		crons.add(System.currentTimeMillis());
+	public void doCron(long now) {
+		crons.add(now);
 		if (crons.size() > MAX_HIST)
 			crons.remove(0);
 		save();
-		
-		return false; // TODO
+	}
+	
+	public void doCron() {
+		doCron(System.currentTimeMillis());
 	}
 	
 	public boolean doFlip(String pswd) {
@@ -52,7 +60,7 @@ import com.googlecode.objectify.annotation.Id;
 		return false;
 	}
 	
-	private void save() {
+	void save() {
 		ofy().save().entity(this).now();
 	}
 }

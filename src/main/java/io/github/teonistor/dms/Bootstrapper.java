@@ -1,6 +1,4 @@
 package io.github.teonistor.dms;
-import java.io.PrintStream;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -11,6 +9,7 @@ import com.googlecode.objectify.ObjectifyService;
 	@Override public void contextInitialized(ServletContextEvent event) {
 		ObjectifyService.init();
 		ObjectifyService.register(AppData.class);
+		ObjectifyService.register(Person.class);
 	}
 
 	@Override public void contextDestroyed(ServletContextEvent sce) {

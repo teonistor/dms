@@ -25,3 +25,5 @@ Go to `localhost:8080`. Cloud datastore will be used even when running locally, 
 ## Deploying
 
     mvn appengine:deploy
+    gcloud app deploy src/main/webapp/WEB-INF/cron.yaml # Whenever you change cron configuration
+
