@@ -37,14 +37,12 @@ public class App extends HttpServlet {
 		case "/catastrophe": postCatastrophe(request.getParameter("pswd"), response); break;
 		default: response.sendRedirect("/");
 		}
-
-
-
-		//		response.getWriter().write("Home page under construction");
-		//		request.getRequestDispatcher("/home.html").include(request, response);
 	}
 
-
+    /**
+     * Status page
+     * @return HTML to be displayed
+     */
 	private String status () {
 		AppData ad = AppData.retrieve();
 
@@ -71,6 +69,10 @@ public class App extends HttpServlet {
 		return html.toString();
 	}
 
+	/**
+	 * Cron job. Send emails as necessary for reminders and people
+	 * @return HTML to be displayed (also printed for logging)
+	 */
 	private String cron() {
 		AppData ad = AppData.retrieve();
 		long lastFlip = ad.flips.get(ad.flips.size() - 1);
@@ -108,14 +110,27 @@ public class App extends HttpServlet {
 		return result;
 	}
 
+	/**
+	 * Reset page (for master to flip the switch)
+	 * @return HTML to be displayed
+	 */
 	private String getReset () {
 		return "<html><head><title>Reset DMS</title><head><body><p>Enter password:</p><form action=\"/reset\" method=\"post\"><input type=\"password\" name=\"pswd\"><input type=\"submit\"></form></body></html>";
 	}
 
+	/**
+	 * Catastrophe page (for recipients to find their files)
+	 * @return HTML to be displayed
+	 */
 	private String getCatastrophe () {
 		return "<html><head><title>Reset DMS</title><head><body><p>Enter password:</p><form action=\"/catastrophe\" method=\"post\"><input type=\"password\" name=\"pswd\"><input type=\"submit\"></form></body></html>";
 	}
 
+	/**
+	 * Page shown after master password was entered
+	 * @param pswd The password
+	 * @return HTML to be displayed
+	 */
 	private String postReset (String pswd) {
 		AppData ad = AppData.retrieve();
 
@@ -146,15 +161,20 @@ public class App extends HttpServlet {
 			System.out.println(sc);
 			System.out.println(sc.length());
 			
-			String path = ad.people.stream()
+			Person person = ad.people.stream()
 					     .filter(p -> sc.equals(p.pswd))
 					     .findFirst()
-					     .map(p -> p.path)
+//					     .map(p -> p.path)
 					     .orElse(null);
-			if (path == null)
+			
+			// Person not found => wrong password
+			if (person == null)
 				response.getWriter().write("<html><head><title>Error</title><head><body>Wrong password</body></html>");
-			else
-			response.sendRedirect("/docs/" + path + ".pdf");
+			
+			// Person found but not yet their time
+			else if (System.currentTimeMillis() - ad.flips.get(ad.flips.size() - 1) < person.delay)
+				response.getWriter().write("<html><head><title>Error</title><head><body>In a hurry?</body></html>");
+			response.sendRedirect("/docs/" + person.pswd.substring(0, 8) + ".pdf");
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

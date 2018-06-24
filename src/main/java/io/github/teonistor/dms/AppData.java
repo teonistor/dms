@@ -19,6 +19,9 @@ import com.googlecode.objectify.annotation.Id;
 	List<Reminder> reminders;
 	String masterPswd, masterEmailFrom, masterEmailTo, salt, reminderMsg, peopleMsg;
 
+	/**
+	 * Create a quasi-empty AppData instance (instantiate lists)
+	 */
 	public AppData() {
 		id=1;
 		crons = new LinkedList<>();
@@ -27,6 +30,10 @@ import com.googlecode.objectify.annotation.Id;
 		reminders = new ArrayList<>();
 	}
 
+	/**
+	 * Retrieve the Application Data instance from Datastore (first instance, but there should only be one)
+	 * @return the instance
+	 */
 	public static AppData retrieve() {
 		AppData ad = ofy().load().type(AppData.class).first().now();
 		if (ad == null) {
@@ -36,6 +43,10 @@ import com.googlecode.objectify.annotation.Id;
 		return ad;
 	}
 	
+	/**
+	 * Add the present moment to the list of times the cron job was run, capping the total count to MAX_HIST, then save application data to Datastore
+	 * @param now Unixtime (in milliseconds) to be considered "now" 
+	 */
 	public void doCron(long now) {
 		crons.add(now);
 		if (crons.size() > MAX_HIST)
@@ -43,10 +54,18 @@ import com.googlecode.objectify.annotation.Id;
 		save();
 	}
 	
+	/**
+	 * Add the present moment to the list of times the cron job was run, capping the total count to MAX_HIST, then save application data to Datastore
+	 */
 	public void doCron() {
 		doCron(System.currentTimeMillis());
 	}
 	
+	/**
+	 * Flip the switch if password is correct
+	 * @param pswd Given password, hashed
+	 * @return true if and only if the flip was performed
+	 */
 	public boolean doFlip(String pswd) {
 		if (pswd.equals(masterPswd)) {
 			flips.add(System.currentTimeMillis());
@@ -61,6 +80,9 @@ import com.googlecode.objectify.annotation.Id;
 		return false;
 	}
 	
+	/**
+	 * Save this instance to Datastore
+	 */
 	void save() {
 		ofy().save().entity(this).now();
 	}

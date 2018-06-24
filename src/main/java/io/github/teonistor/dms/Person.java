@@ -1,12 +1,11 @@
 package io.github.teonistor.dms;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
+import static javax.mail.Message.RecipientType.CC;
+import static javax.mail.Message.RecipientType.TO;
 
 import java.util.Properties;
 
 import javax.mail.Message;
-import static javax.mail.Message.RecipientType.TO;
-import static javax.mail.Message.RecipientType.CC;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -19,17 +18,27 @@ import com.googlecode.objectify.annotation.Id;
 @Entity public class Person {
 
 	@Id long id;
-	String pswd, path, email;
+	String pswd, email;
 	long delay;
 	boolean waiting;
 
+	/**
+	 * Create a dummy Person
+	 */
 	public Person() {
 		id = 2;
-		pswd = path = email = "NIL";
+		pswd = email = "NIL";
 		delay = Long.MAX_VALUE;
 		waiting = true;
 	}
 
+	/**
+	 * Send an email to this person if time since last flip exceeds their defined delay
+	 * @param lastFlip Last flip of the switch
+	 * @param now Present moment
+	 * @return true if and only if an email was sent
+	 * @throws MessagingException if an email was supposed to be sent but failed
+	 */
 	public boolean checkSend(long lastFlip, long now) throws MessagingException {
 		if (waiting && now - lastFlip > delay) {
 			AppData ad = AppData.retrieve();
