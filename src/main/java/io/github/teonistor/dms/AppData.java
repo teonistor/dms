@@ -16,16 +16,15 @@ import com.googlecode.objectify.annotation.Id;
 	
 	List<Long> crons, flips;
 	List<Person> people;
-	String masterPswd, masterEmail, salt;
+	List<Reminder> reminders;
+	String masterPswd, masterEmailFrom, masterEmailTo, salt, reminderMsg, peopleMsg;
 
 	public AppData() {
 		id=1;
 		crons = new LinkedList<>();
 		flips = new LinkedList<>();
 		people = new ArrayList<>();
-		masterPswd = "Nil";
-		masterEmail = "nistorteodor6a+rcv@gmail.com";
-		salt = "Nil";
+		reminders = new ArrayList<>();
 	}
 
 	public static AppData retrieve() {
@@ -53,6 +52,8 @@ import com.googlecode.objectify.annotation.Id;
 			flips.add(System.currentTimeMillis());
 			if (flips.size() > MAX_HIST)
 				flips.remove(0);
+			for (Reminder r : reminders)
+				r.waiting = true;
 			save();
 			return true;
 		}

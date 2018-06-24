@@ -51,20 +51,20 @@ public class App extends HttpServlet {
 		StringBuilder html = new StringBuilder("<html><head><title>DMS Status</title></head><body>");
 		long waiting = ad.people.stream().filter(p -> p.waiting).count();
 		html.append(Long.toString(ad.people.size() - waiting))
-		.append(" emails sent, ")
-		.append(Long.toString(waiting))
-		.append(" waiting.");
+			.append(" emails sent, ")
+			.append(Long.toString(waiting))
+			.append(" waiting.");
 
 		html.append("<h2>Cron worked</h2>");
 		for (Long date : ad.crons) {
-			html.append(new Date(date));
-			html.append("<br>");
+			html.append(new Date(date))
+				.append("<br>");
 		}
 
 		html.append("<h2>Switches flipped</h2>");
 		for (Long date : ad.flips) {
-			html.append(new Date(date));
-			html.append("<br>");
+			html.append(new Date(date))
+				.append("<br>");
 		}
 
 		html.append("<br><a href='/reset'>Reset</a></body></html");
@@ -77,6 +77,18 @@ public class App extends HttpServlet {
 		long now = System.currentTimeMillis();
 		int sentCount=0, errCount=0;
 		StringBuilder errMsg = new StringBuilder();
+		
+		for (Reminder r : ad.reminders) {
+			try {
+				if (r.checkSend(lastFlip, now))
+					sentCount++;
+			} catch (MessagingException e) {
+				errCount++;
+				errMsg.append("<br>");
+				errMsg.append(e);
+				e.printStackTrace();
+			}
+		}
 
 		for (Person p : ad.people) {
 			try {
@@ -91,7 +103,9 @@ public class App extends HttpServlet {
 		}
 
 		ad.doCron(now);
-		return String.format("Cron performed, %d emails sent, %d errors.%s", sentCount, errCount, errMsg);
+		String result = String.format("Cron performed, %d emails sent, %d errors.%s", sentCount, errCount, errMsg);
+		System.out.println(result);
+		return result;
 	}
 
 	private String getReset () {

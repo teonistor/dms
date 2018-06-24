@@ -2,7 +2,6 @@ package io.github.teonistor.dms;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
 import com.googlecode.objectify.ObjectifyService;
 
 @WebListener public class Bootstrapper implements ServletContextListener {
@@ -10,6 +9,7 @@ import com.googlecode.objectify.ObjectifyService;
 		ObjectifyService.init();
 		ObjectifyService.register(AppData.class);
 		ObjectifyService.register(Person.class);
+		ObjectifyService.register(Reminder.class);
 	}
 
 	@Override public void contextDestroyed(ServletContextEvent sce) {

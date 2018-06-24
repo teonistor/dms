@@ -1,4 +1,4 @@
 cron:
-- description: "Daily cron job"
+- description: "Check for time-outs and send emails accordingly"
   url: /cron
-  schedule: every 24 minutes
+  schedule: every 12 hours

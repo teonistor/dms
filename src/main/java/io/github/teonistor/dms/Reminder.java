@@ -16,36 +16,29 @@ import javax.mail.internet.MimeMessage;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
-@Entity public class Person {
+@Entity public class Reminder {
 
 	@Id long id;
-	String pswd, path, email;
 	long delay;
 	boolean waiting;
 
-	public Person() {
-		id = 2;
-		pswd = path = email = "NIL";
-		delay = Long.MAX_VALUE;
+	public Reminder() {
+		id = 31;
+		delay = 86427531;
 		waiting = true;
 	}
 
 	public boolean checkSend(long lastFlip, long now) throws MessagingException {
 		if (waiting && now - lastFlip > delay) {
 			AppData ad = AppData.retrieve();
-			//            javax.mail.Message msg = new Message(
-			//                    "nistorteodor6a@gmail.com",
-			//                    "teo.g.nistor@gmail.com",
-			//                    "Test",
-			//                    "Testing...");
+			
 			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
 			msg.setFrom(new InternetAddress(ad.masterEmailFrom));
-			msg.addRecipient(TO, new InternetAddress(email));
-			msg.addRecipient(CC, new InternetAddress(ad.masterEmailTo));
+			msg.addRecipient(TO, new InternetAddress(ad.masterEmailTo));
 			msg.setSubject("Dead Man's Switch");
-			msg.setText(ad.peopleMsg);
+			msg.setText(ad.reminderMsg);
 			Transport.send(msg);
-			
+
 			waiting = false;
 			return true;
 		}
