@@ -142,9 +142,24 @@ public class App extends HttpServlet {
 			System.out.println(sc.length());
 
 			if(ad.doFlip(sc)) {
-				return "<html><head><title>Reset DMS Successful</title><head><body>Reset DMS Successful</body></html>";
+				long now = System.currentTimeMillis();
+				StringBuilder sb = new StringBuilder("<html><head><title>Reset DMS Successful</title><head><body><h2>Reset DMS Successful.</h2><h2>Next email times:</h2>");
+				for (Reminder r : ad.reminders)
+					sb.append("Reminder ")
+					  .append(r.id)
+					  .append(": ")
+					  .append(new Date(now + r.delay))
+					  .append("<br>");
+				for (Person p : ad.people)
+					sb.append("Person ")
+					  .append(p.pswd.substring(0, 7))
+					  .append(": ")
+					  .append(new Date(now + p.delay))
+					  .append("<br>");
+				sb.append("</body></html>");
+				return sb.toString();
 			}
-			return "<html><head><title>Reset DMS Failed</title><head><body>Reset DMS failed</body></html>";
+			return "<html><head><title>Reset DMS Failed</title><head><body>Reset DMS failed<br><a href='/'>Front page</a></body></html>";
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return e.toString();
@@ -174,7 +189,10 @@ public class App extends HttpServlet {
 			// Person found but not yet their time
 			else if (System.currentTimeMillis() - ad.flips.get(ad.flips.size() - 1) < person.delay)
 				response.getWriter().write("<html><head><title>Error</title><head><body>In a hurry?</body></html>");
-			response.sendRedirect("/docs/" + person.pswd.substring(0, 8) + ".pdf");
+			
+			// All good => redirect to file
+			else
+				response.sendRedirect("/docs/" + person.pswd.substring(0, 8) + ".pdf");
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
