@@ -141,9 +141,9 @@ public class App extends HttpServlet {
 			String sc = printHexBinary(md.digest(pswd.getBytes()));
 			System.out.println(sc);
 			System.out.println(sc.length());
+			long now = System.currentTimeMillis();
 
-			if(ad.doFlip(sc)) {
-				long now = System.currentTimeMillis();
+			if(ad.doFlip(sc, now)) {
 				StringBuilder sb = new StringBuilder("<html><head><title>Reset DMS Successful</title><head><body><h2>Reset DMS Successful.</h2><h2>Next email times:</h2>");
 				for (Reminder r : ad.reminders)
 					sb.append("Reminder ")

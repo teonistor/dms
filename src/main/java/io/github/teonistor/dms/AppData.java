@@ -45,7 +45,7 @@ import com.googlecode.objectify.annotation.Id;
 	
 	/**
 	 * Add the present moment to the list of times the cron job was run, capping the total count to MAX_HIST, then save application data to Datastore
-	 * @param now Unixtime (in milliseconds) to be considered "now" 
+	 * @param now Unixtime (in milliseconds) to be considered the present moment
 	 */
 	public void doCron(long now) {
 		crons.add(now);
@@ -64,11 +64,12 @@ import com.googlecode.objectify.annotation.Id;
 	/**
 	 * Flip the switch if password is correct
 	 * @param pswd Given password, hashed
+	 * @param now Unixtime (in milliseconds) to be considered the present moment
 	 * @return true if and only if the flip was performed
 	 */
-	public boolean doFlip(String pswd) {
+	public boolean doFlip(String pswd, long now) {
 		if (pswd.equals(masterPswd)) {
-			flips.add(System.currentTimeMillis());
+			flips.add(now);
 			if (flips.size() > MAX_HIST)
 				flips.remove(0);
 			for (Reminder r : reminders)
@@ -78,6 +79,15 @@ import com.googlecode.objectify.annotation.Id;
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Flip the switch if password is correct
+	 * @param pswd Given password, hashed
+	 * @return true if and only if the flip was performed
+	 */
+	public boolean doFlip(String pswd) {
+		return doFlip(pswd, System.currentTimeMillis());
 	}
 	
 	/**

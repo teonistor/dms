@@ -42,11 +42,11 @@ import com.googlecode.objectify.annotation.Id;
 	public boolean checkSend(long lastFlip, long now) throws MessagingException {
 		if (waiting && now - lastFlip > delay) {
 			AppData ad = AppData.retrieve();
-			//            javax.mail.Message msg = new Message(
-			//                    "nistorteodor6a@gmail.com",
-			//                    "teo.g.nistor@gmail.com",
-			//                    "Test",
-			//                    "Testing...");
+//            javax.mail.Message msg = new Message(
+//                    "nistorteodor6a@gmail.com",
+//                    "teo.g.nistor@gmail.com",
+//                    "Test",
+//                    "Testing...");
 			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
 			msg.setFrom(new InternetAddress(ad.masterEmailFrom));
 			msg.addRecipient(TO, new InternetAddress(email));
