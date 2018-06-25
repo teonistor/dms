@@ -25,7 +25,8 @@ public class App extends HttpServlet {
 		case "/reset": response.getWriter().write(getReset()); break;
 		case "/catastrophe": response.getWriter().write(getCatastrophe()); break;
 		case "/cron": response.getWriter().write(cron()); break;
-		default: response.getWriter().write(status());
+		case "/": response.getWriter().write(status()); break;
+		default: response.sendRedirect("/");
 		}
 	}
 
